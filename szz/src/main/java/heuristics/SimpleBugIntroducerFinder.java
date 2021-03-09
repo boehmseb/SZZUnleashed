@@ -186,7 +186,7 @@ public class SimpleBugIntroducerFinder implements BugIntroducerFinder {
 
       while(gen.hasNext()) {
         String[] pair = gen.getNextIndic();
-        if (pair[0] == "" && pair[1] == "")
+        if (Objects.equals(pair[0], "") && Objects.equals(pair[1], ""))
           continue;
         
         if (isWithinTimeframe(pair[1], pair[0])) {
@@ -218,7 +218,7 @@ public class SimpleBugIntroducerFinder implements BugIntroducerFinder {
 
       while(gen.hasNext()) {
         String[] pair = gen.getNextIndic();
-        if (pair[0] == "" && pair[1] == "")
+        if (Objects.equals(pair[0], "") && pair[1].equals(""))
           continue;
         if (isPartialFix(pair[0])) {
           bugIntroducers.add(pair);
