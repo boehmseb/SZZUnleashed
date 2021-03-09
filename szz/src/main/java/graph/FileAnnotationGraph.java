@@ -51,7 +51,7 @@ public class FileAnnotationGraph {
    * @return a map containing all line numbers that corresponds to the lines in the successor.
    */
   public Map<Integer, Integer> getLineMapping(String revision) {
-    if (revision == revisions.getFirst()) {
+    if (Objects.equals(revision, revisions.getFirst())) {
       System.err.println("Revision must have a successor! Return empty map..");
       return new LinkedHashMap<>();
     }

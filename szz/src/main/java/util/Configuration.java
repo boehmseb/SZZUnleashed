@@ -113,7 +113,7 @@ public class Configuration {
     }
 
     if (cmd.hasOption("b")) {
-      if (cmd.getOptionValue("b") == "distance") instance.setBugFinder(BugFinderFactory.DISTANCE);
+      if (cmd.getOptionValue("b").equals("distance")) instance.setBugFinder(BugFinderFactory.DISTANCE);
     }
 
     if (cmd.hasOption("dc")) {

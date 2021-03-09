@@ -181,7 +181,7 @@ public class CommitUtil {
   public Commit getCommitDiffingLines(RevCommit revc, RevCommit... revother)
       throws IOException, GitAPIException {
 
-    if (revc.getId() == revc.zeroId()) return null;
+    if (revc.getId() == RevCommit.zeroId()) return null;
 
     RevCommit parent = null;
     if (revother.length > 0) parent = revother[0];
