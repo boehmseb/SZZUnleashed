@@ -35,7 +35,7 @@ import org.json.simple.JSONObject;
  *
  * @author Oscar Svensson
  */
-public class AnnotationMap<K, V> extends HashMap<K, V> {
+public class AnnotationMap extends HashMap<String, List<FileAnnotationGraph>> {
 
   /** Constructor for the AnnotationMap. */
   public AnnotationMap() {
@@ -48,16 +48,18 @@ public class AnnotationMap<K, V> extends HashMap<K, V> {
    * @param path the path to the directory where the JSON file will be written.
    */
   public void saveToJSON(String path) {
-    Set<Map.Entry<K, V>> entries = entrySet();
+    Set<Map.Entry<String, List<FileAnnotationGraph>>> entries = entrySet();
 
     JSONObject tree = new JSONObject();
-    for (Map.Entry<K, V> entry : entries) {
-      String commit = (String) entry.getKey();
+    for (Map.Entry<String, List<FileAnnotationGraph>> entry : entries) {
+      String commit = entry.getKey();
+      List<FileAnnotationGraph> graphs = entry.getValue();
 
       JSONArray jFileObject = new JSONArray();
-      List<FileAnnotationGraph> graphs = (List<FileAnnotationGraph>) entry.getValue();
 
-      for (FileAnnotationGraph graph : graphs) jFileObject.add(graph.getGraphJSON());
+      for (FileAnnotationGraph graph : graphs) {
+        jFileObject.add(graph.getGraphJSON());
+      }
 
       tree.put(commit, jFileObject);
     }

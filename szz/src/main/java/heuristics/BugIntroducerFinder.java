@@ -36,6 +36,5 @@ import org.eclipse.jgit.api.errors.GitAPIException;
  * @author Oscar Svensson
  */
 public interface BugIntroducerFinder {
-  public List<String[]> findBugIntroducingCommits(
-      AnnotationMap<String, List<FileAnnotationGraph>> graphs) throws IOException, GitAPIException;
+  public List<String[]> findBugIntroducingCommits(AnnotationMap graphs) throws IOException, GitAPIException;
 }

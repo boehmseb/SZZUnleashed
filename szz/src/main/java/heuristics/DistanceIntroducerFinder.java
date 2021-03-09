@@ -128,7 +128,7 @@ public class DistanceIntroducerFinder implements BugIntroducerFinder {
    * <p>All lines that have been
    */
   public List<String[]> findBugIntroducingCommits(
-      AnnotationMap<String, List<FileAnnotationGraph>> graphs) throws IOException, GitAPIException {
+      AnnotationMap graphs) throws IOException, GitAPIException {
 
     List<String[]> bugIntroducers = new LinkedList<>();
     for (Map.Entry<String, List<FileAnnotationGraph>> entry : graphs.entrySet()) {

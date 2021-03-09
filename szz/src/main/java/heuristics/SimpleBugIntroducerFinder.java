@@ -117,8 +117,7 @@ public class SimpleBugIntroducerFinder implements BugIntroducerFinder {
    *
    * @param graphs a graph containing all reported bugfixes.
    */
-  public List<String[]> findBugIntroducingCommits(
-      AnnotationMap<String, List<FileAnnotationGraph>> graphs) throws IOException, GitAPIException {
+  public List<String[]> findBugIntroducingCommits(AnnotationMap graphs) throws IOException, GitAPIException {
 
     List<String[]> bugIntroducers = new LinkedList<>();
     List<String[]> potentialBugIntroducers = new LinkedList<>();

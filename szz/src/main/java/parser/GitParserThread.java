@@ -94,8 +94,7 @@ public class GitParserThread extends Thread {
       Set<RevCommit> commits = this.parser.readBugFixCommits(this.issues);
       logger.info("Checking each commits diff...");
 
-      AnnotationMap<String, List<FileAnnotationGraph>> graphs =
-          this.parser.annotateCommits(commits);
+      AnnotationMap graphs = this.parser.annotateCommits(commits);
       logger.info("Trying to find potential bug introducing commits...");
       List<String[]> bugIntroducers = Collections.emptyList();
 

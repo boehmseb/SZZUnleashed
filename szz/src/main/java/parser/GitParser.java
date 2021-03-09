@@ -264,10 +264,10 @@ public class GitParser {
    * @param commits list of commits that should be traced.
    * @return the map containing annotation graphs for each file change by a commit.
    */
-  private AnnotationMap<String, List<FileAnnotationGraph>> buildLineMappingGraph(
+  private AnnotationMap buildLineMappingGraph(
       List<Commit> commits) throws IOException, GitAPIException {
 
-    AnnotationMap<String, List<FileAnnotationGraph>> fileGraph = new AnnotationMap<>();
+    AnnotationMap fileGraph = new AnnotationMap();
     for (Commit commit : commits) {
       List<FileAnnotationGraph> graphs = new LinkedList<>();
       for (Map.Entry<String, DiffEntry.ChangeType> file : commit.changeTypes.entrySet()) {
@@ -304,7 +304,7 @@ public class GitParser {
    *
    * @param commits a set containing references to commits.
    */
-  public AnnotationMap<String, List<FileAnnotationGraph>> annotateCommits(Set<RevCommit> commits)
+  public AnnotationMap annotateCommits(Set<RevCommit> commits)
       throws IOException, GitAPIException {
     this.logger.info("Parsing difflines for all found commits.");
     List<Commit> parsedCommits = this.util.getDiffingLines(commits);
@@ -313,7 +313,7 @@ public class GitParser {
     JSONUtil.saveFoundCommits(parsedCommits, this.resultPath);
 
     this.logger.info("Building line mapping graph.");
-    AnnotationMap<String, List<FileAnnotationGraph>> mapping = buildLineMappingGraph(parsedCommits);
+    AnnotationMap mapping = buildLineMappingGraph(parsedCommits);
 
     this.logger.info("Saving results to file");
     mapping.saveToJSON(this.resultPath);
