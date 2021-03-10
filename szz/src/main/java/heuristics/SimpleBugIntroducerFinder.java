@@ -32,7 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import util.RevisionCombinationGenerator;
@@ -44,10 +43,10 @@ import util.RevisionCombinationGenerator;
  */
 public class SimpleBugIntroducerFinder implements BugIntroducerFinder {
 
-  private Issues issues;
-  private Repository repo;
-  private int depth;
-  private Pattern partialFixPattern;
+  private final Issues issues;
+  private final Repository repo;
+  private final int depth;
+  private final Pattern partialFixPattern;
 
   public SimpleBugIntroducerFinder(
       Issues issues, Repository repo, int depth, String partialFixPattern) {
@@ -65,7 +64,7 @@ public class SimpleBugIntroducerFinder implements BugIntroducerFinder {
    * @param commit the potential bug introducing commit.
    * @return if the commit is within the timeframe.
    */
-  private boolean isWithinTimeframe(String fix, String commit) throws IOException, GitAPIException {
+  private boolean isWithinTimeframe(String fix, String commit) throws IOException {
     Map<String, String> dates = this.issues.get(fix);
 
     RevCommit rCommit = this.repo.parseCommit(this.repo.resolve(commit));
@@ -75,7 +74,7 @@ public class SimpleBugIntroducerFinder implements BugIntroducerFinder {
     String commitDateString = dates.get("creationdate");
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
 
-    Date commitDate = null;
+    Date commitDate;
     try {
       commitDate = format.parse(commitDateString);
     } catch (Exception e) {
@@ -87,9 +86,9 @@ public class SimpleBugIntroducerFinder implements BugIntroducerFinder {
   }
 
   /** Check if a commit is a partial fix. */
-  private boolean isPartialFix(String commit) throws IOException, GitAPIException {
+  private boolean isPartialFix(String commit) throws IOException {
     RevCommit rCommit = this.repo.parseCommit(this.repo.resolve(commit));
-    String message = rCommit.getFullMessage();
+    rCommit.getFullMessage();
 
     Matcher fixMatch = this.partialFixPattern.matcher(commit);
 
@@ -117,19 +116,15 @@ public class SimpleBugIntroducerFinder implements BugIntroducerFinder {
    *
    * @param graphs a graph containing all reported bugfixes.
    */
-  public List<String[]> findBugIntroducingCommits(AnnotationMap graphs) throws IOException, GitAPIException {
+  public List<String[]> findBugIntroducingCommits(AnnotationMap graphs) throws IOException {
 
     List<String[]> bugIntroducers = new LinkedList<>();
-    List<String[]> potentialBugIntroducers = new LinkedList<>();
-
-    Map<String, List<String>> bucketIntroducers = new HashMap<String, List<String>>();
-    Map<String, List<String>> bucketIssues = new HashMap<String, List<String>>();
+    Map<String, List<String>> bucketIntroducers = new HashMap<>();
+    Map<String, List<String>> bucketIssues = new HashMap<>();
 
     for (Map.Entry<String, List<FileAnnotationGraph>> entry : graphs.entrySet()) {
-
-      List<FileAnnotationGraph> files = new LinkedList<>();
       String sCommitString = entry.getKey();
-      files = entry.getValue();
+      List<FileAnnotationGraph> files = entry.getValue();
 
       /*
        * Grab all commits that are seen as fixes or that have changed anything.
@@ -169,9 +164,8 @@ public class SimpleBugIntroducerFinder implements BugIntroducerFinder {
       }
     }
 
-    List<String[]> partial_fix_suspects = new LinkedList<>();
-    Map<String, List<String>> partialIntroducers = new HashMap<String, List<String>>();
-    Map<String, List<String>> partialIssues = new HashMap<String, List<String>>();
+    Map<String, List<String>> partialIntroducers = new HashMap<>();
+    Map<String, List<String>> partialIssues = new HashMap<>();
     /*
      * Now check if any of the potential bugintroducing commits are bugintroducers for any other fix commit, aka weak suspects.
      * This check should be made smarter...

@@ -158,11 +158,11 @@ public class DiffingLines {
         /*
          * Are they out of boundary?
          */
-        firstIndex = 0 > firstIndex ? 0 : firstIndex;
-        firstEnd = old.size() < firstEnd ? old.size() : firstEnd;
+        firstIndex = Math.max(0, firstIndex);
+        firstEnd = Math.min(old.size(), firstEnd);
 
-        secondIndex = 0 > secondIndex ? 0 : secondIndex;
-        secondEnd = present.size() < secondEnd ? present.size() : secondEnd;
+        secondIndex = Math.max(0, secondIndex);
+        secondEnd = Math.min(present.size(), secondEnd);
 
         /*
          * Loop through both revisions parallel.
@@ -170,7 +170,7 @@ public class DiffingLines {
         while (firstIndex < firstEnd || secondIndex < secondEnd) {
             String[] info = null;
 
-            if (firstIndex < first.getBeginA() || last + 1 < i) {
+            if (firstIndex < first.getBeginA() || last <= i) {
                 if (this.omitLineText) {
                   info = new String[]{Integer.toString(firstIndex), Integer.toString(firstIndex)};
                 } else {
