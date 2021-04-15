@@ -170,7 +170,7 @@ public class DiffingLines {
         while (firstIndex < firstEnd || secondIndex < secondEnd) {
             String[] info = null;
 
-            if (firstIndex < first.getBeginA() || last <= i) {
+            if (firstIndex < first.getBeginA() || last + 1 < i) {
                 if (this.omitLineText) {
                   info = new String[]{Integer.toString(firstIndex), Integer.toString(firstIndex)};
                 } else {
